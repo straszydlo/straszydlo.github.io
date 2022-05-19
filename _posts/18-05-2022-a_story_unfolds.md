@@ -8,7 +8,19 @@ description: or how I tried to plant a tree
 
 ### or how I tried to plant a tree
 
-I tried to re-implement the Unix `tree` tool in Haskell, as a learning exercise. The problem is well-defined, well-structured, obviously recursive, so it should be easy to do, a no-brainer almost[^excuses].
+I tried to re-implement the Unix `tree` tool in Haskell, as a learning exercise. The goal is to create a tool that, when provided with a directory, lists all the contents and prints them in a way similar to this:
+```
+$ tree
+.
+├── a
+│   └── c
+└── b
+    ├── d
+    └── e
+
+5 directories, 0 files
+```
+It is well-defined, well-structured, and obviously recursive problem, so it should be easy to do, a no-brainer almost[^excuses].
 
 I started hacking away at the tree.
 
@@ -22,7 +34,7 @@ A naïve implementation came to mind right away[^madeup]:
 tree :: File -> IO ()
 tree file = tree' "" file
   where tree' prefix file = do
-          putStrLn $ (prefix ++ "- " ++ name file)
+          putStrLn (prefix ++ "- " ++ name file)
           isDirectory <- isDir file
           if isDirectory
           then do
@@ -30,6 +42,8 @@ tree file = tree' "" file
             traverse_ (tree' (' ':prefix)) contents
           else return ()
 ```
+It does not produce nice branch-looking lines between filenames, relying on indentation instead - but it is close enough.
+
 Obviously, this code is clumsy - and not just because the utility functions are crude. No, this code is just clumsy and inflexible in itself - and what's even worse, it makes one cardinal sin.
 _It mixes the responsibilities._
 
@@ -83,7 +97,7 @@ type BuildNode t a = a -> [t a] -> t a
 Having these, we can construct our tree builder:
 ```haskell
 treeBuilder :: LookAround a -> BuildNode t a -> a -> t a
-treeBuilder lookAround buildNode value = buildNode value . childNodes . lookAround $ value
+treeBuilder lookAround buildNode value = (buildNode value . childNodes . lookAround) value
   where childNodes = fmap (treeBuilder lookAround buildNode)
 ```
 To be more confident that it works as expected, we can, for example, define these:
@@ -101,7 +115,7 @@ nodes value subtrees = Node value subtrees
 
 and then run:
 ```haskell
-print $ treeBuilder children nodes 12
+print (treeBuilder children nodes 12)
 ```
 to get a tree in which children of the node are the divisors of the value `v` stored in the node (smaller than `v` itself), `12` being the root.
 
@@ -134,7 +148,7 @@ treeBuilderM lookAroundM buildNodeM value = lookAroundM value >>= childNodes >>=
 ```
 Now it contains the scary M-word, but it lets us redefine `treeBuilder` as a one-liner:
 ```haskell
-treeBuilder lookAround buildNode value = runIdentity $ treeBuilderM (return . lookAround) (\a b -> return $ buildNode a b) value
+treeBuilder lookAround buildNode value = runIdentity (treeBuilderM (return . lookAround) (\a b -> return (buildNode a b)) value)
 ```
 The `lookAround` function now looks like this:
 ```haskell
@@ -150,13 +164,17 @@ and the `buildNode` becomes:
 buildNode :: File -> [FileTree File] -> IO (FileTree File)
 buildNode file subtrees = do
   isDirectory <- isDir file
-  return $ if isDirectory
-  then Directory file subtrees
-  else RegularFile file
+  if isDirectory
+  then return (Directory file subtrees)
+  else return (RegularFile file)
 ```
 with a minor modification to our `FileTree`:
 ```haskell
-data FileTree a = File a | Directory a [FileTree a]
+data FileTree a = RegularFile a | Directory a [FileTree a]
+```
+and to the `printTree` type signature:
+```haskell
+printTree :: FileTree File -> String
 ```
 With all of this in place, we can rewrite our `buildTree` function:
 ```haskell
@@ -175,11 +193,11 @@ The beauty of abstract constructs lies in their duality - they are incredibly ri
 
 My `treeBuilderM` is, however, far from the most beautiful function. It can get better, prettier and even more general. The forest is thicker and spreads further, with many paths left to explore.
 
-[^excuses]: I am by no means a Haskell expert, as I am still learning the language. Much of the code from this post could be written in a more elegant way, but I either don't know the proper constructs yet, or I am ignoring things like `ifM` on purpose - to make the snippets more accessible to people from outside the Haskell world.
+[^excuses]: I am by no means a Haskell expert, as I am still learning the language. Much of the code from this post could be written in a more elegant way, but I either don't know the proper constructs yet, or I am ignoring things like `ifM` (and even `$`) on purpose - to make the snippets more accessible to people from outside the Haskell world.
 
 [^axes]:
     I am consciously ignoring the existence of symbolic links, along with the fact that a given file might not exist - for the sake of brevity.
-    And here is the implementation, based on `listDirectory` and `doesDirectoryExist` from `System.Directory` module, from `directory` package:
+    And here is the implementation, based on `listDirectory` and `doesDirectoryExist` from `System.Directory` module, from [`directory`](https://hackage.haskell.org/package/directory) package:
     ```haskell
     data File = File { base :: Maybe FilePath, name :: FilePath }
 
@@ -191,12 +209,15 @@ My `treeBuilderM` is, however, far from the most beautiful function. It can get 
     listDir file = do
       let dirPath = fullPath file
       contents <- listDirectory dirPath
-      return $ map (File dirPath) contents
+      return (map (File (Just dirPath)) contents)
 
     isDir :: File -> IO Bool
     isDir = doesDirectoryExist . fullPath
     ```
+    `FilePath` is an alias for `String`, defined in `System.Directory`.
+
     I decided to create the `File` type to avoid having to change the working directory, as the `listDirectory` function returns only the names of the files inside of a dir. It's not a proper implementation by any means, and it serves a purpose of simplifying the code a bit. It does also have a nasty side effect of making simple paths like `"."` into monstrosities like `File Nothing "."`.
+
     Also the code in this post imports `System.Directory`, `Data.Foldable` and `Data.Functor.Identity`.
 [^madeup]: I made this part up, I actually started with the `data Tree` implementation.
 
