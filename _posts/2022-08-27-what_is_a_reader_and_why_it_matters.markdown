@@ -1,7 +1,7 @@
 ---
 layout: post
 title: A primer on Readers
-category: Scala
+categories: [Scala 2.13, Functional programming]
 description: Without mentioning monads!
 ---
 ### The dream
@@ -133,6 +133,8 @@ def createUser(input: String): Reader[Env, Option[User]] = for {
 This idea is quite similar to how ZIO handles dependency injection[^ZIO], and how it's often done in the wide functional world. Of course this implementation is quite limited &mdash; but its purpose is to give the reader (pun intended) an intuition on how `Reader`s work.
 
 So to sum up: `Reader` is simply a functional programming pattern for composing two-argument functions that share one of its arguments, and it can be used for anything from passing common values around with less clutter to full-blown dependency injection. Go forth and read!
+
+---
 
 [^compose]: Scala also defines the `compose` method that behaves exactly like mathematical function composition, but `andThen` is usually easier to follow, as it reflects the exact order of function application.
 

@@ -19,6 +19,8 @@ markdown: kramdown
 kramdown:
   input: GFM
 
+encoding: utf-8
+
 # Third-party services
 # just leave someone empty to disable it
 # google_analytics: 
