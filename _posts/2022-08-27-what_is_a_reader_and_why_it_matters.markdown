@@ -30,7 +30,7 @@ def g: E => B => C = ???
 def h: E => C => D = ???
 ```
 
-This is again a common thing &mdash; oftentimes we need to pass some sort of a context (or other dependency) to our method. It would be useful to be able to compose them, even if just to save us some writing.
+This is again a common thing &mdash; oftentimes we need to pass some sort of a context (or other dependency) to our methods. It would be useful to be able to compose them, even if just to save us some writing.
 They share the type of the first argument &mdash; it must have made our task easier. What do we need to do to be able to compose them in a sensible way?
 
 ## The promise
