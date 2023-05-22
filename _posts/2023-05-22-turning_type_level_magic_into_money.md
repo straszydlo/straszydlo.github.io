@@ -7,7 +7,7 @@ description: Saves you some mistakes, for sure.
 ### Money, money, money
 Every single one of us handles money-related code at some point in time &mdash; be it because of the particular domain we work on, our own convenience, or just as a mental exercise. Regardless of the motivation, we all learn sooner or later that this is a surprisingly non-trivial topic, especially that it's critically important to do everything right.
 
-# We've all been there
+### We've all been there
 Let's say we have some cash in different currencies, and wish to know how much dollars these amount to. A naive model could look like this:
 ```Scala
 @main def run =
@@ -24,7 +24,7 @@ We all know how it ends:
 ```
 A mistake that could be fixed with better naming, one could argue &mdash; the problem however is that this bug is especially hard to spot, and nothing helps us to do so!
 
-# Enter the Model
+### Enter the Model
 Let's address that issue, and give our values a proper representation:
 ```Scala
 case class Money(value: BigDecimal)
@@ -48,7 +48,7 @@ case class Rate(rate: BigDecimal)
 Now we are safe.
 
 Or are we?
-# Foiled again
+### Foiled again
 ```Scala
 @main def run =
   val pounds: Money = Money(2.0)
@@ -86,7 +86,7 @@ Now, should anyone try to add mismatching currencies or convert money using a wr
   val dollarsToPounds = dollars.exchange(poundsToDollars)
 ```
 
-# All is good
+### All is good
 As we can see, a relatively simple model of the domain can make our lives so much simpler, saving us from wasting hours (if not days) of debugging to find a simplest mistake possible.
 
 As a final touch, let's get rid of the exceptions in favor of a more sensible error handling mechanism:
@@ -106,7 +106,7 @@ case class Rate(rate: BigDecimal, from: Currency, to: Currency)
 case class MismatchedCurrencies(c1: Currency, c2: Currency)
 ```
 
-# ...or is it?
+### ...or is it?
 ```Scala
 def calculateUSIncomeTax(dollars: Money): Money =
   //Skipping the implementation, as taxes are ridiculously complicated
@@ -132,7 +132,7 @@ In addition, switching from exceptions to `Either` made our API a bit less conve
 
 Can we somehow make the implementation safer? Or at least get the nice API back?
 
-# Phantom menace
+### Phantom menace
 The answer is yes &mdash; if you wish to sell your soul to the type-level devil and let the compiler check the validity of your operations. First let's lift the currency information into the type level:
 ```Scala
 sealed trait Currency
@@ -162,10 +162,10 @@ Now we can observe that invalid additions and conversions are no longer possible
 ```
 We both have prevented invalid behavior at compile time **and** regained our nice API!
 
-# The price
+### The price
 We have, however, lost a couple of things. First, we cannot display our `Money` objects nicely anymore, since the currency info is no longer just a value, but instead a type parameter that ceases to exist at runtime; second, the implementation became less elegant, as now we have a dedicated trait hierarchy just for marking our `Money` while most likely still needing the value-level representation for different use cases. The former is an easily fixable detail, the latter is a sacrifice we might be willing to make when safety is critical.
 
-# Singleton of Scalatown
+### Singleton of Scalatown
 There is one more thing that we can do, a trick that relies on an obscure, borderline black magic Scala feature. If you are satisfied with the solution above, feel free to skip the rest &mdash; otherwise fasten your seatbelts and abandon all hope.
 
 Enter the singleton types.
@@ -200,7 +200,7 @@ case class Rate[A, B](rate: BigDecimal, from: A, to: B)
 
 We can now freely add new currencies as we go, we have retained our nice API[^tradeoff], and we are as safe as it gets!
 
-# What's the value of a singleton type?
+### What's the value of a singleton type?
 The example above has the downside of unnecessary constructor parameters. We'd like to get rid of them, but that would mean our overloaded `toString` wouldn't work again. Fortunately, retrieving a value of a singleton type should be quite simple &mdash; and indeed, Scala provides us with a nice way of doing exactly that. With the `ValueOf` context bound we can rewrite our code into its final form (taking the liberty to organize stuff a bit):
 
 ```Scala
