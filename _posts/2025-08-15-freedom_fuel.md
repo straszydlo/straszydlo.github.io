@@ -1,0 +1,31 @@
+---
+layout: post
+title: Freedom fuel
+categories: [Technology, Sustainability, Renewable Resources, Rant]
+description: Socioeconomic effects of the other kind of alcohol consumption
+---
+### In a nutshell
+I just finished watching a wonderful episode of Kurzgesagt[^video] about alcohol and our relationship with it. Despite starting with calling alcohol "the most harmful substance on Earth", the video could serve as an ad for ethanol consumption &mdash; it explains in great detail why it makes us feel great, and it even suggests that alcohol helped societies thrive by helping overcome anxiety and break down social barriers.
+
+While that claim might not be true, this "pact with the devil", as Kurzgesagt calls it, might actually have had a much more *technical* benefit for early societies. Ethanol is quite effective as a crude food preservative &mdash; and what's even better, alcohol fermentation pretty much happens on its own. It was an invaluable tool for our earliest ancestors, who oftentimes had to endure long periods without access to fresh fruits or grains. I'm far from advocating **for** ingesting alcohol, as nowadays we have healthier and more effective ways of stopping our fruits from going bad &mdash; but it might not be worth pouring it all down the drain. We may have not yet seen the good old *aqua vitae*'s full potential.
+
+### What makes my engine tick
+Biofuels are nothing new. Historically cars used to run on all kinds of combustible liquids. In fact pure ethanol powered Henry Ford's first car, the Quadricycle &mdash; it only fell out of favor during the Prohibition due to gasoline being cheaper[^gasoline]. Contemporary gasoline all over the world usually contains at least some ethanol. Brazil went even further &mdash; all new vehicles sold there are flexfuel-capable, meaning they can run on a blend of gasoline and ethanol in pretty much any proportion. It makes sense &mdash; it lets Brazil shield itself from oil shortages and cut CO₂ emissions. In fact ethanol is superior to gasoline in many regards: it is more resistant to knock, allowing running higher compression ratios for higher efficiency and more torque; its air-fuel ratio is better, allowing extracting more power from a given cylinder volume; it burns cleaner and has much lower carbon footprint[^ecology]; it makes the engine run cooler[^cool]; and finally it's fully renewable. The only issue is its energy density, which is around 67% of gasoline, meaning the engine has to burn more fuel to produce the same power. It's a no-brainer[^caveat].
+
+### What fuels the cells
+Combustion, however cozy and heartwarming, is not the only way of extracting energy back out of alcohol (or rather alcohols in general). Fuel cells can convert alcohol into electricity &mdash either directly[^DEFC] or indirectly &mdash; and do it easily and efficiently. They may not outperform hydrogen fuel cells, but since hydrogen is notoriously difficult to store, the lower cost of infrastructure for liquid fuels is a huge advantage. Even more importantly, it is possible to produce alcohols electrochemically[^methanol][^ethanol] &mdash; which opens another possibility of storing energy from renewable sources, further smoothing out the fluctuations in available power.
+
+### Fuel for freedom
+The most unexpected benefit comes from the low-tech nature of ethanol. It is always available &mdash; you just need to mix water and something that contains sugar, let the wild yeast ferment the mash, and then distill the mash using something as simple as a clay retort placed in the middle of a bonfire. Compared to the complexity of refining crude oil, this is trivial &mdash; anyone can do it anywhere. This means that in the event of a zombie apocalypse Brazil will have the highest number of cars still on the road, but it also means that individuals can still make their own fuel in case of an oil shortage, war or global economic collapse. It is impossible to ban, and no corporation can control the whole supply chain tightly enough to force everyone to buy their product. Moreover, the advances in the fuel cell technology and electrochemical synthesis it might actually allow people to efficiently make ethanol with just as much as a single solar panel. That's as close to self-sufficiency as it gets!
+
+Quite ironically, the same substance that harms so many and has been used by oppressors to control the oppressed, might actually pave the way to a greener, more decentralized and more free future. Here's to a brighter future!
+
+
+[^video]: [Alcohol is AMAZING, Kurzgesagt - In a Nutshell](https://youtu.be/aOwmt39L2IQ)
+[^gasoline]: [Thus says Wikipedia.](https://en.wikipedia.org/wiki/Ethanol_fuel_in_the_United_States#cite_ref-Ethanol_25-0)
+[^cool]: [Cool.](https://grassrootsmotorsports.com/articles/why-does-e85-run-cooler-and-make-more-power/)
+[^ecology]: [The Truth About Ethanol and Carbon Emissions, Renewable Fuels Association](https://ethanolrfa.org/media-and-news/category/blog/article/2022/10/the-truth-about-ethanol-and-carbon-emissions)
+[^caveat]: Some people claim that ethanol has a tendency to destroy engines. This is mostly untrue, with the exception of rubber tubing on old cars that tends to crumble after prolonged contact with ethanol. Fortunately it's easy to fix - just replace it. All the hoses are now manufactured with ethanol content in mind. The other claim that ethanol has a corrosive effect on aluminium due to accumulation of water is questionable at best.
+[^DEFC]: Direct-ethanol and direct-methanol fuel cells are relatively simple to build and promise a 97% theoretical efficiency. Improving actual efficiency is a subject of research.
+[^methanol]: https://doi.org/10.1016/j.nanoen.2024.110099
+[^ethanol]: https://doi.org/10.1021/acsenergylett.0c02610
